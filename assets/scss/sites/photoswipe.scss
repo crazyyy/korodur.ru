@@ -3,6 +3,7 @@
   Styles for basic PhotoSwipe functionality (sliding area, open/close transitions)
 */
 /* pswp = photoswipe */
+
 .pswp {
   position: absolute;
   z-index: 1500;
@@ -22,16 +23,17 @@
   -webkit-text-size-adjust: 100%;
   -ms-touch-action: none;
       touch-action: none;
-}
-.pswp * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-.pswp img {
-  max-width: none;
+  * {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+  img {
+    max-width: none;
+  }
 }
 
 /* style is added when JS option showHideOpacity is set to true */
+
 .pswp--animate_opacity {
   /* for open/close transition */
   -webkit-transition: opacity 333ms cubic-bezier(.4, 0, .22, 1);
@@ -72,6 +74,7 @@
   Background is added as a separate element.
   As animating opacity is much faster than animating rgba() background-color.
 */
+
 .pswp__bg {
   position: absolute;
   top: 0;
@@ -111,6 +114,7 @@
 }
 
 /* Prevent selection and tap highlights */
+
 .pswp__container,
 .pswp__img {
   -webkit-user-select: none;
@@ -143,10 +147,12 @@
   will-change: opacity;
 }
 
-.pswp--animated-in .pswp__bg,
-.pswp--animated-in .pswp__zoom-wrap {
-  -webkit-transition: none;
-          transition: none;
+.pswp--animated-in {
+  .pswp__bg,
+  .pswp__zoom-wrap {
+    -webkit-transition: none;
+            transition: none;
+  }
 }
 
 .pswp__container,
@@ -177,6 +183,7 @@
   stretched thumbnail or div placeholder element (see below)
   style is added to avoid flickering in webkit/blink when layers overlap
 */
+
 .pswp__img--placeholder {
   -webkit-backface-visibility: hidden;
 }
@@ -185,6 +192,7 @@
   div element that matches size of large image
   large image loads on top of it
 */
+
 .pswp__img--placeholder--blank {
   background: #222222;
 }
@@ -201,6 +209,7 @@
   Error message appears when image is not loaded
   (JS option errorMsg controls markup)
 */
+
 .pswp__error-msg {
   font-size: 14px;
   line-height: 16px;
@@ -215,10 +224,9 @@
   text-align: center;
 
   color: #cccccc;
-}
+  a {
+    text-decoration: underline;
 
-.pswp__error-msg a {
-  text-decoration: underline;
-
-  color: #cccccc;
+    color: #cccccc;
+  }
 }
