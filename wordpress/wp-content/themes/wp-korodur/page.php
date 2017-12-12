@@ -1,15 +1,26 @@
 <?php get_header(); ?>
 
-  <?php if (have_posts()): while (have_posts()) : the_post(); ?>
-    <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+  <div class="wpHeaderTitlebar wpAreaColorIndustry">
+    <h2><?php the_title(); ?></h2>
+  </div>
+  <div class="container wpBreadcrumb">
+    <?php if (function_exists('easy_breadcrumbs')) easy_breadcrumbs(); ?>
+  </div>
 
-      <h1 class="page-title inner-title"><?php the_title(); ?></h1>
-      <?php the_content(); ?>
-      <?php edit_post_link(); ?>
+  <div class="container wpPageMainContainer">
+    <div class="row">
 
-    </article>
-  <?php endwhile; endif; ?>
+      <?php get_sidebar(); ?>
 
-  <?php get_sidebar(); ?>
+      <?php if (have_posts()): while (have_posts()) : the_post(); ?>
+        <div id="post-<?php the_ID(); ?>" <?php post_class('col-md-8 col-lg-9 wpPageMainContentContainer wpPageMainContentContainerTop wpAreaColorIndustry'); ?>>
+
+          <div class="wpContentElement">
+            <h2><?php the_title(); ?></h2>
+            <?php the_content(); ?>
+          </div>
+
+        </div>
+      <?php endwhile; endif; ?>
 
 <?php get_footer(); ?>

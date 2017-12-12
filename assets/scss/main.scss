@@ -4572,6 +4572,52 @@ input {
   padding-left: 0;
 
   list-style: none;
+  > li {
+    position: relative;
+
+    display: inline-block;
+    float: none;
+
+    margin-top: 0;
+    margin-left: .5rem;
+    &.menu-item-has-children {
+      &:after {
+        font-family: FontAwesome;
+        font-size: 16px;
+
+        position: relative;
+        top: -5px;
+
+        display: inline !important;
+
+        width: 0;
+        height: 0;
+        margin-right: .2rem;
+        margin-left: 0;
+
+        content: '\f078';
+        vertical-align: middle;
+
+        border: 0 none;
+      }
+    }
+    > a {
+      font-size: 1.125rem;
+      font-weight: 400;
+
+      display: inline-block;
+      float: none;
+
+      padding: .425rem 0;
+
+      text-transform: uppercase;
+
+      color: #003772;
+    }
+    .sub-menu {
+      display: none;
+    }
+  }
 }
 
 .nav-link {
@@ -4583,7 +4629,6 @@ input {
   &.disabled {
     cursor: not-allowed;
 
-    color: #878c90;
     color: #878c90;
     background-color: transparent;
     &:focus,
