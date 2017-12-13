@@ -3936,6 +3936,42 @@ input[type='submit'].btn-block, input[type='reset'].btn-block, input[type='butto
   margin-left: .5rem;
 }
 
+.nav > li .sub-menu {
+  position: absolute;
+  display: none;
+  padding: 10px 0 0 0;
+  list-style-type: none;
+  border-top: 1px solid #bfcad6 !important;
+  border-right: 1px solid #bfcad6 !important;
+  border-bottom: 0 none !important;
+  border-left: 1px solid #bfcad6 !important;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.nav > li .sub-menu li {
+  display: block;
+  text-align: left;
+}
+
+.nav > li .sub-menu li a {
+  font-size: .7rem;
+  font-weight: normal;
+  font-weight: 400;
+  display: block;
+  padding: .5rem 3rem .5rem 1rem;
+  color: #595959;
+  border-bottom: 1px solid #bfcad6;
+}
+
+.nav > li .sub-menu li a:hover {
+  color: #003772;
+  background-color: #bfcad6;
+}
+
+.nav > li.menu-item-has-children {
+  position: relative;
+}
+
 .nav > li.menu-item-has-children:after {
   font-family: FontAwesome;
   font-size: 16px;
@@ -3961,8 +3997,8 @@ input[type='submit'].btn-block, input[type='reset'].btn-block, input[type='butto
   color: #003772;
 }
 
-.nav > li .sub-menu {
-  display: none;
+.nav > li:hover .sub-menu {
+  display: block;
 }
 
 .looper {

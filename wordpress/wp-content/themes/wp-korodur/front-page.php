@@ -87,7 +87,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="wpPageMainContentContainer wpPageMainContentContainerFullWidth">
-                  <h3 class="csc-firstHeader"><?php the_field('bottom_block_title'); ?>"></h3>
+                  <h3 class="csc-firstHeader"><?php the_field('bottom_block_title'); ?></h3>
                   <div class="wpContentElement wpReferenceList">
                     <ul>
 
