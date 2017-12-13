@@ -4619,7 +4619,31 @@ input {
     }
   }
 }
+.looper {
+  display: flex;
+  flex-direction: row;
 
+  margin-bottom: 10px;
+
+  align-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  .feature-img {
+    display: block;
+    overflow: hidden;
+
+    width: 28%;
+
+    border-radius: 3px;
+    img {
+      width: 100%;
+    }
+  }
+  .looper-content {
+    width: 68%;
+  }
+}
 .nav-link {
   display: inline-block;
   &:focus,

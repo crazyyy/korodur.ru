@@ -1,10 +1,21 @@
 <?php get_header(); ?>
-  <article>
 
-    <h1 class="cat-title inner-title"><?php the_category(', '); ?></h1>
-    <?php get_template_part('loop'); ?>
-    <?php get_template_part('pagination'); ?>
+  <div class="wpHeaderTitlebar wpAreaColorIndustry">
+    <h2><?php the_category(', '); ?></h2>
+  </div>
+  <div class="container wpBreadcrumb">
+    <?php if (function_exists('easy_breadcrumbs')) easy_breadcrumbs(); ?>
+  </div>
 
-  </article>
-<?php get_sidebar(); ?>
+  <div class="container wpPageMainContainer">
+    <div class="row">
+
+      <?php get_sidebar(); ?>
+
+      <div class="col-md-8 col-lg-9 wpPageMainContentContainer wpPageMainContentContainerTop wpAreaColorIndustry">
+
+        <?php get_template_part('loop'); ?>
+        <?php get_template_part('pagination'); ?>
+      </div>
+
 <?php get_footer(); ?>

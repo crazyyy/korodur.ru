@@ -29,9 +29,9 @@
           <li class="nav-item"><a href="<?php echo home_url(); ?>"><i class="fa fa-home" aria-hidden="true"></i></a></li>
           <li class="nav-item">
             <div class="social">
-              <a href="https://www.facebook.com/KorodurGmbH" target="_blank"> <i class="fa fa-facebook-square" aria-hidden="true"></i> </a>
-              <a href="https://www.youtube.com/user/KORODUR" target="_blank"> <i class="fa fa-youtube-square" aria-hidden="true"></i> </a>
-              <a href="https://twitter.com/KORODUR_GmbH" target="_blank"> <i class="fa fa-twitter-square" aria-hidden="true"></i> </a>
+              <a href="#" target="_blank"> <i class="fa fa-facebook-square" aria-hidden="true"></i> </a>
+              <a href="#" target="_blank"> <i class="fa fa-youtube-square" aria-hidden="true"></i> </a>
+              <a href="#" target="_blank"> <i class="fa fa-twitter-square" aria-hidden="true"></i> </a>
             </div>
           </li>
         </ul>
@@ -51,7 +51,6 @@
         </div>
         <nav class="collapse navbar-toggleable-sm wpPageNavCollapse navbar-offcanvas navbar-offcanvas-right navbar-offcanvas-touch offcanvas-transform js-offcanvas-done" id="wpPageNavCollapse">
           <?php wpeHeadNav(); ?>
-
         </nav>
       </div>
     </div>

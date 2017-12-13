@@ -58,6 +58,21 @@ function wpeHeaderScripts() {
     wp_deregister_script( 'jquery-form' );
 
     //  Load footer scripts (footer.php)
+    wp_register_script('tether', get_template_directory_uri() . '/js/tether.min.js', array(), '1.0.0', true);
+    wp_enqueue_script('tether');
+    wp_register_script('bootstrap', get_template_directory_uri() . '/js/bootstrap.min.js', array(), '1.0.0', true);
+    wp_enqueue_script('bootstrap');
+    wp_register_script('bootstrapoffcanvas', get_template_directory_uri() . '/js/bootstrap.offcanvas.min.js', array(), '1.0.0', true);
+    wp_enqueue_script('bootstrapoffcanvas');
+    wp_register_script('matchHeight', get_template_directory_uri() . '/js/jquery.matchHeight.js', array(), '1.0.0', true);
+    wp_enqueue_script('matchHeight');
+    wp_register_script('photoswipe', get_template_directory_uri() . '/js/photoswipe.min.js', array(), '1.0.0', true);
+    wp_enqueue_script('photoswipe');
+    wp_register_script('photoswipe-ui-default', get_template_directory_uri() . '/js/photoswipe-ui-default.min.js', array(), '1.0.0', true);
+    wp_enqueue_script('photoswipe-ui-default');
+    wp_register_script('init', get_template_directory_uri() . '/js/init.js', array(), '1.0.0', true);
+    wp_enqueue_script('init');
+
     wp_register_script('wpeScripts', get_template_directory_uri() . '/js/scripts.js', array(), '1.0.0', true);
     wp_enqueue_script('wpeScripts');
 
@@ -140,7 +155,7 @@ function wpeFootNav() {
     'after'           => '',
     'link_before'     => '',
     'link_after'      => '',
-    'items_wrap'      => '<ul class="footernav">%3$s</ul>',
+    'items_wrap'      => '<ul class="nav nav-inline wpPageFooterNav">%3$s</ul>',
     'depth'           => 0,
     'walker'          => ''
     )
@@ -185,10 +200,10 @@ if (function_exists('register_sidebar')) {
     'name' => __('Блок виджетов #1', 'wpeasy'),
     'description' => __('Description for this widget-area...', 'wpeasy'),
     'id' => 'widgetarea1',
-    'before_widget' => '<div id="%1$s" class="widget %2$s">',
-    'after_widget' => '</div>',
-    'before_title' => '<h6>',
-    'after_title' => '</h6>'
+    'before_widget' => '<div id="%1$s" class="wpPageMainContentContainer wpPageMainContentContainerTop %2$s"><div class="wpContentElement wpInfosAndLinks">',
+    'after_widget' => '</div></div>',
+    'before_title' => '<h2>',
+    'after_title' => '</h2>'
   ));
   //  Define Sidebar Widget Area 2. If your want to display more widget - uncoment this
   /*

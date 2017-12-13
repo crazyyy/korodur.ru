@@ -3965,6 +3965,31 @@ input[type='submit'].btn-block, input[type='reset'].btn-block, input[type='butto
   display: none;
 }
 
+.looper {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  align-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.looper .feature-img {
+  display: block;
+  overflow: hidden;
+  width: 28%;
+  border-radius: 3px;
+}
+
+.looper .feature-img img {
+  width: 100%;
+}
+
+.looper .looper-content {
+  width: 68%;
+}
+
 .nav-link {
   display: inline-block;
 }
