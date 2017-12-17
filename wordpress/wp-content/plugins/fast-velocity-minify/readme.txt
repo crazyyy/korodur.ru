@@ -2,8 +2,8 @@
 Contributors: Alignak
 Tags: merge, combine, concatenate, PHP Minify, YUI Compressor, CSS, javascript, JS, minification, minify, optimization, optimize, stylesheet, aggregate, cache, CSS, html, minimize, pagespeed, performance, speed, GTmetrix, pingdom
 Requires at least: 4.5
-Stable tag: 2.2.2
-Tested up to: 4.9
+Stable tag: 2.2.3
+Tested up to: 4.9.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,18 @@ Note: Kindly purge the plugin cache as well as your server /plugin cache after u
 
 
 == Changelog ==
+
+= 2.2.3 [2017.12.17] =
+* added robots.txt and ajax requests to the exclusion list
+* added some cdn fixes
+* added a new Pro tab
+* added a global critical path css section
+* added an option to dequeue all css files
+* added an option to load CSS Async with LoadCSS (experimental)
+* added an option to merge external resources together
+* added the possibility to manage the default ignore list (reported files that cause conflicts when merged) 
+* added the possibility to manage the blacklist (files that cannot be merged with normal files)
+* added better descriptions and labels for some options
 
 = 2.2.2 [2017.11.12] =
 * fixed the current cdn option box

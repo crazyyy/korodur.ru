@@ -31,7 +31,7 @@ $cachedirurl = rtrim($upload['baseurl'], '/').'/fvm/cache';
 if(!is_dir($cachebase)) { mkdir($cachebase); }
 if(!is_dir($cachedir)) { mkdir($cachedir); }
 if(!is_dir($tmpdir)) { mkdir($tmpdir); }
-$return = array('tmpdir'=>$tmpdir, 'cachedir'=>$cachedir, 'cachedirurl'=>$cachedirurl);
+$return = array('cachebase'=>$cachebase,'tmpdir'=>$tmpdir, 'cachedir'=>$cachedir, 'cachedirurl'=>$cachedirurl);
 	
 # save or update
 $save = get_option('fvm-cachepath', array()); 
@@ -147,7 +147,12 @@ return fvm_compat_urls($css);
 # find if we are running windows
 function fvm_server_is_windows() {
 	if(defined('PHP_OS_FAMILY') && strtolower(PHP_OS_FAMILY) == 'windows') { return true; } # PHP 7.2.0+
-	if (stripos(php_uname('s'), 'Windows') !== false) { return true; }# fallback
+	if(function_exists('php_uname')) {
+		$os = @php_uname('s');
+		if (stripos($os, 'Windows') !== false) { 
+			return true; 
+		}
+	}
 	return false;
 }
 
@@ -260,25 +265,9 @@ function fastvelocity_format_filesize($bytes, $decimals = 2) {
 
 # get cache size and count
 function fastvelocity_get_cachestats() {
-	
-# info
-$cachepath = fvm_cachepath();
-$tmpdir = $cachepath['tmpdir'];
-$cachedir =  $cachepath['cachedir'];
-$search = array($tmpdir, $cachedir);
-$size = 0;
-$count = 0;
-
-foreach ($search as $dir) {
-if(is_dir(rtrim($dir, '/'))) {
-	if ($handle = opendir($dir.'/')) {
-	while (false !== ($file = readdir($handle))) { $f = $dir.'/'.$file; $size = $size + filesize($f); $count++;	} 
-	closedir($handle);
-	}
-} 
-}
-
-return array('size'=>fastvelocity_format_filesize($size), 'count'=>$count);
+$dir = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(fvm_cachepath()['cachebase'], FilesystemIterator::SKIP_DOTS));
+$size = 0; foreach ( $dir as $file ) { $size += $file->getSize(); }
+return fastvelocity_format_filesize($size);
 }
 
 
@@ -308,8 +297,8 @@ if(!$disable_css_minification) {
 # cdn urls
 $fvm_cdn_url = get_option('fastvelocity_min_fvm_cdn_url');
 if(!empty($fvm_cdn_url)) {
-$fvm_cdn_url = trim(trim(str_ireplace(array('http://', 'https://'), '', trim($fvm_cdn_url, '/'))), '/');
-$css = str_ireplace($wp_domain, $fvm_cdn_url, $css);
+	$fvm_cdn_url = trim(trim(str_ireplace(array('http://', 'https://'), '', trim($fvm_cdn_url, '/'))), '/');
+	$css = str_ireplace($wp_domain, $fvm_cdn_url, $css);
 }
 
 # return html
@@ -618,8 +607,8 @@ function fvm_get_protocol($url) {
 	# cdn support
 	$fvm_cdn_url = get_option('fastvelocity_min_fvm_cdn_url');
 	if(!empty($fvm_cdn_url)) {
-	$fvm_cdn_url = trim(trim(str_ireplace(array('http://', 'https://'), '', trim($fvm_cdn_url, '/'))), '/');
-	$url = str_ireplace($wp_domain, $fvm_cdn_url, $url);
+		$fvm_cdn_url = trim(trim(str_ireplace(array('http://', 'https://'), '', trim($fvm_cdn_url, '/'))), '/');
+		$url = str_ireplace($wp_domain, $fvm_cdn_url, $url);
 	}
 
 	# enforce protocol if needed
@@ -667,7 +656,17 @@ return true;
 
 # exclude processing from some pages / posts / contents
 function fastvelocity_exclude_contents() {
-	
+
+# ajax requests
+if ( 
+	(defined('DOING_AJAX') && DOING_AJAX) || (function_exists('wp_doing_ajax') && wp_doing_ajax()) || 
+	(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') || 
+	(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+) { return true; }
+
+# robots.txt and xml dynamically generated sitemaps
+if(isset($_SERVER['REQUEST_URI']) && (substr($_SERVER['REQUEST_URI'], -4) == '.txt' || substr($_SERVER['REQUEST_URI'], -4) == '.xml')) { return true; }
+
 # customizer preview, visual composer
 $arr = array('customize_theme', 'preview_id', 'preview');
 foreach ($arr as $a) { if(isset($_GET[$a])) { return true; } }
