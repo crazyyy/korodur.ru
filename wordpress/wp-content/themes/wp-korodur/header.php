@@ -25,22 +25,11 @@
   <div class="wpSiteWrapper">
     <div class="navbar navbar-fixed-top">
       <div class="container-fluid wpPageMetanavContainer">
-        <ul class="nav navbar-nav">
-          <li class="nav-item"><a href="<?php echo home_url(); ?>"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-          <li class="nav-item">
-            <div class="social">
-              <a href="#" target="_blank"> <i class="fa fa-facebook-square" aria-hidden="true"></i> </a>
-              <a href="#" target="_blank"> <i class="fa fa-youtube-square" aria-hidden="true"></i> </a>
-              <a href="#" target="_blank"> <i class="fa fa-twitter-square" aria-hidden="true"></i> </a>
-            </div>
-          </li>
-        </ul>
       </div>
       <div class="container-fluid wpPageNavContainer">
         <h1 class="navbar-brand">
           <a href="<?php echo home_url(); ?>">
             <img src="<?php echo get_template_directory_uri(); ?>/img/logo.png" class="img-fluid" alt="Korodur Logo">
-            <span class="sr-only">Korodur</span>
           </a>
         </h1>
         <div class="hidden-md-up" id="">

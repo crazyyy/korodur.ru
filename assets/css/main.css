@@ -4001,6 +4001,29 @@ input[type='submit'].btn-block, input[type='reset'].btn-block, input[type='butto
   display: block;
 }
 
+.gallery-list {
+  display: block;
+  margin: 0 0 20px;
+  padding: 10px 0 0;
+}
+
+.gallery-list li {
+  display: inline-block;
+  width: 33%;
+}
+
+.gallery-list li:before {
+  display: none;
+}
+
+.gallery-list li a {
+  display: block;
+}
+
+.gallery-list li img {
+  width: 100%;
+}
+
 .looper {
   display: flex;
   flex-direction: row;

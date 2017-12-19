@@ -197,9 +197,86 @@ function register_html5_menu() {
 if (function_exists('register_sidebar')) {
   //  Define Sidebar Widget Area 1
   register_sidebar(array(
-    'name' => __('Блок виджетов #1', 'wpeasy'),
+    'name' => __('Основной блок виджетов', 'wpeasy'),
     'description' => __('Description for this widget-area...', 'wpeasy'),
+    'id' => 'widgetarea',
+    'before_widget' => '<div id="%1$s" class="wpPageMainContentContainer wpPageMainContentContainerTop %2$s"><div class="wpContentElement wpInfosAndLinks">',
+    'after_widget' => '</div></div>',
+    'before_title' => '<h2>',
+    'after_title' => '</h2>'
+  ));
+}
+
+if (function_exists('register_sidebar')) {
+  //  Define Sidebar Widget Area 1
+  register_sidebar(array(
+    'name' => __('Блок дополнительных виджетов #1', 'wpeasy'),
+    'description' => __('', 'wpeasy'),
     'id' => 'widgetarea1',
+    'before_widget' => '<div id="%1$s" class="wpPageMainContentContainer wpPageMainContentContainerTop %2$s"><div class="wpContentElement wpInfosAndLinks">',
+    'after_widget' => '</div></div>',
+    'before_title' => '<h2>',
+    'after_title' => '</h2>'
+  ));
+}
+
+if (function_exists('register_sidebar')) {
+  //  Define Sidebar Widget Area 1
+  register_sidebar(array(
+    'name' => __('Блок дополнительных виджетов #2', 'wpeasy'),
+    'description' => __('', 'wpeasy'),
+    'id' => 'widgetarea2',
+    'before_widget' => '<div id="%1$s" class="wpPageMainContentContainer wpPageMainContentContainerTop %2$s"><div class="wpContentElement wpInfosAndLinks">',
+    'after_widget' => '</div></div>',
+    'before_title' => '<h2>',
+    'after_title' => '</h2>'
+  ));
+}
+
+if (function_exists('register_sidebar')) {
+  //  Define Sidebar Widget Area 1
+  register_sidebar(array(
+    'name' => __('Блок дополнительных виджетов #3', 'wpeasy'),
+    'description' => __('', 'wpeasy'),
+    'id' => 'widgetarea3',
+    'before_widget' => '<div id="%1$s" class="wpPageMainContentContainer wpPageMainContentContainerTop %2$s"><div class="wpContentElement wpInfosAndLinks">',
+    'after_widget' => '</div></div>',
+    'before_title' => '<h2>',
+    'after_title' => '</h2>'
+  ));
+}
+
+if (function_exists('register_sidebar')) {
+  //  Define Sidebar Widget Area 1
+  register_sidebar(array(
+    'name' => __('Блок дополнительных виджетов #4', 'wpeasy'),
+    'description' => __('', 'wpeasy'),
+    'id' => 'widgetarea4',
+    'before_widget' => '<div id="%1$s" class="wpPageMainContentContainer wpPageMainContentContainerTop %2$s"><div class="wpContentElement wpInfosAndLinks">',
+    'after_widget' => '</div></div>',
+    'before_title' => '<h2>',
+    'after_title' => '</h2>'
+  ));
+}
+
+if (function_exists('register_sidebar')) {
+  //  Define Sidebar Widget Area 1
+  register_sidebar(array(
+    'name' => __('Блок дополнительных виджетов #5', 'wpeasy'),
+    'description' => __('', 'wpeasy'),
+    'id' => 'widgetarea5',
+    'before_widget' => '<div id="%1$s" class="wpPageMainContentContainer wpPageMainContentContainerTop %2$s"><div class="wpContentElement wpInfosAndLinks">',
+    'after_widget' => '</div></div>',
+    'before_title' => '<h2>',
+    'after_title' => '</h2>'
+  ));
+}
+if (function_exists('register_sidebar')) {
+  //  Define Sidebar Widget Area 1
+  register_sidebar(array(
+    'name' => __('Блок дополнительных виджетов #6', 'wpeasy'),
+    'description' => __('', 'wpeasy'),
+    'id' => 'widgetarea6',
     'before_widget' => '<div id="%1$s" class="wpPageMainContentContainer wpPageMainContentContainerTop %2$s"><div class="wpContentElement wpInfosAndLinks">',
     'after_widget' => '</div></div>',
     'before_title' => '<h2>',
