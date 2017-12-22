@@ -5,7 +5,7 @@ Plugin URI: http://fastvelocity.com
 Description: Improve your speed score on GTmetrix, Pingdom Tools and Google PageSpeed Insights by merging and minifying CSS and JavaScript files into groups, compressing HTML and other speed optimizations. 
 Author: Raul Peixoto
 Author URI: http://fastvelocity.com
-Version: 2.2.3
+Version: 2.2.5
 License: GPL2
 
 ------------------------------------------------------------------------
@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 
 # check for minimum requirements and prevent activation or disable if not fully compatible
-function fvm_compat_checker() {	
+function fvm_compat_checker() {
 	global $wp_version; 
 	
 	# defaults
@@ -71,7 +71,6 @@ $tmpdir = $cachepath['tmpdir'];
 $cachedir =  $cachepath['cachedir'];
 $cachedirurl = $cachepath['cachedirurl'];
 
-# get the current wordpress installation url and path
 $wp_home = site_url();   # get the current wordpress installation url
 $wp_domain = trim(str_ireplace(array('http://', 'https://'), '', trim($wp_home, '/')));
 $wp_home_path = ABSPATH;
@@ -123,7 +122,6 @@ $loadcss = get_option('fastvelocity_min_loadcss');
 $fvm_remove_css = get_option('fastvelocity_min_fvm_removecss');
 $critical_path_css = get_option('fastvelocity_min_critical_path_css');
 $fvm_cdn_url = get_option('fastvelocity_min_fvm_cdn_url');
-
 
 # default options
 $used_css_files = array();
@@ -205,7 +203,8 @@ function fastvelocity_min_files_callback() {
 	global $cachedir;
 
 	# default
-    $return = array('js' => array(), 'css' => array(), 'stamp' => $_POST['stamp']);
+	$size = fastvelocity_get_cachestats();
+    $return = array('js' => array(), 'css' => array(), 'stamp' => $_POST['stamp'], 'cachesize'=> $size);
 	
 	# inspect directory with opendir, since glob might not be available in some systems
 	if ($handle = opendir($cachedir.'/')) {
@@ -219,11 +218,12 @@ function fastvelocity_min_files_callback() {
                 $filename = basename($file);
                 if ($ext == 'css' && file_exists($mincss)) { $filename = basename($mincss); }
                 if ($ext == 'js' && file_exists($minjs)) { $filename = basename($minjs); }
+				$fsize = fastvelocity_format_filesize(filesize($file));
 				
-				# get location, hash, modified date
+				# get location, hash, log
 				$info = explode('-', $filename);
 				$hash = $info['1'];
-                array_push($return[$ext], array('hash' => $hash, 'filename' => $filename, 'log' => $log));
+                array_push($return[$ext], array('hash' => $hash, 'filename' => $filename, 'log' => $log, 'fsize' => $fsize));
             }
 		}
 	closedir($handle);
@@ -281,6 +281,8 @@ function fastvelocity_min_register_settings() {
     register_setting('fvm-group-pro', 'fastvelocity_min_ignorelist');
     register_setting('fvm-group-pro', 'fastvelocity_min_blacklist');
     register_setting('fvm-group-pro', 'fastvelocity_min_merge_allowed_urls');
+    register_setting('fvm-group-pro', 'fastvelocity_min_change_cache_path');
+	register_setting('fvm-group-pro', 'fastvelocity_min_change_cache_base_url');
 }
 
 
@@ -342,7 +344,7 @@ echo fastvelocity_purge_others(); # purge third party caches
                     <div class="inside" id="fastvelocity_min_topbtns">
                         <ul class="processed">
 						<li id="purgeall-row">
-							<span class="filename">Purge processed CSS and JS files (<?php echo fastvelocity_get_cachestats(); ?>)</span> 
+							<span class="filename">Purge FVM cache directory (<span id="fvm_cache_size"><?php echo fastvelocity_get_cachestats(); ?></span>)</span> 
 							<span class="actions">
 							<form method="post" id="fastvelocity_min_clearall" action="<?php echo admin_url('options-general.php?page=fastvelocity-min&tab=status'); ?>">
 							<input type="hidden" name="purgeall" value="1" />
@@ -593,7 +595,7 @@ Skip deferring completely on the login page <span class="note-info">[ If selecte
 
 <div style="height: 20px;"></div>
 <h2 class="title">CDN Options</h2>
-<p class="fvm-bold-green">Use this to map your static assets to your cdn url.</p>
+<p class="fvm-bold-green">If the "Enable defer of JS for Pagespeed Insights" option is enabled, JS and CSS files will not be loaded from the CDN.<br />However, the static assets used inside the CSS and JS files will load from the CDN directly.</p>
 
 <table class="form-table fvm-settings">
 <tbody>
@@ -602,7 +604,7 @@ Skip deferring completely on the login page <span class="note-info">[ If selecte
 <td><fieldset>
 <label for="fastvelocity_min_fvm_cdn_url">
 <p><input type="text" name="fastvelocity_min_fvm_cdn_url" id="fastvelocity_min_fvm_cdn_url" value="<?php echo get_option('fastvelocity_min_fvm_cdn_url', ''); ?>" size="80" /></p>
-<p class="description">[ This will rewrite the generated CSS and JS urls to use your cdn domain name, ie: cdn.example.com ]</p></label>
+<p class="description">[ Load the generated CSS and JS urls (only) from your cdn domain name, ie: cdn.example.com ]</p></label>
 </fieldset></td>
 </tr>
 </tbody></table>
@@ -675,7 +677,7 @@ Skip deferring completely on the login page <span class="note-info">[ If selecte
 <p>
 <textarea name="fastvelocity_min_critical_path_css" rows="10" cols="50" id="fastvelocity_min_critical_path_css" class="large-text code" placeholder="your css code here"><?php echo get_option('fastvelocity_min_critical_path_css'); ?></textarea>
 </p>
-<p class="description">[ Use this if you're familiar with <a target="_blank" href="https://github.com/giakki/uncss">UnCSS</a> or have the critical path css. ]</p>
+<p class="description">[ Use this if you're familiar with <a target="_blank" href="https://github.com/giakki/uncss">UnCSS</a> or have the correct critical path css. ]</p>
 </fieldset>
 </td>
 </tr>
@@ -686,8 +688,8 @@ Skip deferring completely on the login page <span class="note-info">[ If selecte
 <td><fieldset>
 <label for="fastvelocity_min_fvm_removecss">
 <input name="fastvelocity_min_fvm_removecss" type="checkbox" id="fastvelocity_min_fvm_removecss" value="1" <?php echo checked(1 == get_option('fastvelocity_min_fvm_removecss'), true, false); ?>>
-Dequeue all CSS files <span class="note-info">[ Use this if you have your own uncss stylesheet or want to test how the critical path css looks ]</span></label>
-</td>
+Dequeue all CSS files <span class="note-info">[ Use this if you have your uncss code, your own css file or want to test how the critical path css looks like ]</span></label>
+</td> 
 </tr>
 </tbody></table>
 
@@ -703,7 +705,7 @@ Dequeue all CSS files <span class="note-info">[ Use this if you have your own un
 <td><fieldset>
 <label for="fastvelocity_min_loadcss">
 <input name="fastvelocity_min_loadcss" type="checkbox" id="fastvelocity_min_loadcss" value="1" <?php echo checked(1 == get_option('fastvelocity_min_loadcss'), true, false); ?>>
-Async CSS with LoadCSS<span class="note-info">[ Only works if "Inline all header /footer CSS files" is disabled ]</span></label>
+Async CSS with LoadCSS<span class="note-info">[ Only works if "Inline all header / footer CSS files" is disabled ]</span></label>
 </fieldset>
 </td>
 </tr>
@@ -757,6 +759,32 @@ Async CSS with LoadCSS<span class="note-info">[ Only works if "Inline all header
 <textarea name="fastvelocity_min_blacklist" rows="10" cols="50" id="fastvelocity_min_blacklist" class="large-text code" placeholder="ex: /wp-includes/js/jquery/jquery.js"><?php echo get_option('fastvelocity_min_blacklist'); ?></textarea>
 </p>
 <p class="description">[ Usually, any IE css /js files that should always be ignored without incrementing the groups ]</p>
+</fieldset></td>
+</tr>
+</tbody></table>
+
+
+<div style="height: 20px;"></div>
+<h2 class="title">Cache Location</h2>
+<p class="fvm-bold-green">Make sure you choose a publicly available directory and that there are writting permissions on that directory.</p>
+<table class="form-table fvm-settings">
+<tbody>
+<tr>
+<th scope="row"><span class="fvm-label-special">Cache Path</span></th>
+<td><fieldset>
+<label for="fastvelocity_min_change_cache_path">
+<p><input type="text" name="fastvelocity_min_change_cache_path" id="fastvelocity_min_change_cache_path" value="<?php echo get_option('fastvelocity_min_change_cache_path', ''); ?>" size="80" /></p>
+<p class="description">[ Default cache path is: <?php echo rtrim(wp_upload_dir()['basedir'], '/'); ?> ]</p>
+</label>
+</fieldset></td>
+</tr>
+<tr>
+<th scope="row"><span class="fvm-label-special">Cache Base URL</span></th>
+<td><fieldset>
+<label for="fastvelocity_min_change_cache_base_url">
+<p><input type="text" name="fastvelocity_min_change_cache_base_url" id="fastvelocity_min_change_cache_base_url" value="<?php echo get_option('fastvelocity_min_change_cache_base_url', ''); ?>" size="80" /></p>
+<p class="description">[ Default cache base url is: <?php echo trim(fvm_get_protocol(wp_upload_dir()['baseurl']), '/'); ?> ]</p>
+</label>
 </fieldset></td>
 </tr>
 </tbody></table>
@@ -1217,7 +1245,7 @@ if(!$skip_google_fonts && count($google_fonts) > 0) {
 		$tkey = 'fvm-cache-'.$ctime.hash('adler32', $concat_google_fonts);
 		$newcode = false; $newcode = get_transient($tkey);
 		if ( $newcode === false) {
-			$res = fvm_download_and_cache($concat_google_fonts, $tkey, null, $disable_minification, 'css');
+			$res = fvm_download_and_cache($concat_google_fonts, $tkey, null, $disable_css_minification, 'css');
 			if(is_array($res)) { $newcode = $res['code']; }
 		}
 		
@@ -1302,7 +1330,7 @@ if(!$skip_cssorder) {
 	}
 }
 
-# critical path + default visibility styles
+# critical path
 if(!empty($critical_path_css) && $critical_path_css != false) {
 	echo '<style id="critical-path-global" type="text/css" media="all">'.$critical_path_css.'</style>'."\n"; 
 }
@@ -1388,9 +1416,16 @@ for($i=0,$l=count($header);$i<$l;$i++) {
 
 # save to some sort of global and show it on the footer
 $mt = $header[$i]['media'];
+echo '<link rel="preload" href="'.$file_url.'" as="style" media="'.$mt.'" onload="this.onload=null;this.rel=\'stylesheet\'">';
+echo '<noscript><link rel="stylesheet" type="text/css" media="'.$mt.'" href="'.$file_url.'"></noscript>';
+echo '<!--[if IE]><link rel="stylesheet" type="text/css" media="'.$mt.'" href="'.$file_url.'"><![endif]-->';
+
+/*
+# alternative way
 echo <<<EOF
 <script type="text/javascript">var ldfvm$i=document.createElement("link");ldfvm$i.rel="stylesheet",ldfvm$i.type="text/css",ldfvm$i.media="bogus",ldfvm$i.href="$file_url",ldfvm$i.onload=function(){ldfvm$i.media="$mt"},document.getElementsByTagName("head")[0].appendChild(ldfvm$i);</script>
 EOF;
+*/
 
 					}
 				} else {
@@ -1444,14 +1479,6 @@ if($fvm_remove_css != false) {
 
 # add defaults to ignore list
 $ignore = fastvelocity_default_ignore($ignore);
-
-# header styles that moved to footer
-if(isset($GLOBALS["fvm-css"]) && is_array($GLOBALS["fvm-css"])) {
-	foreach ($GLOBALS["fvm-css"] as $st) {
-		if(!empty($st)) { echo $st; }
-	}
-}
-
 
 # google fonts to the top
 foreach( $styles->to_do as $handle ) :
@@ -1665,6 +1692,25 @@ for($i=0,$l=count($footer);$i<$l;$i++) {
 $wp_styles->done = $done;
 }
 ###########################################
+
+
+
+###########################################
+# defer CSS globally from the header (order matters)
+###########################################
+function fvm_add_loadcss() { 
+global $force_inline_css, $loadcss, $fvm_remove_css; 
+if($force_inline_css == true && $loadcss != false && $fvm_remove_css != true) {
+
+		# echo LoadCSS scripts
+		echo '<script>
+		/*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
+		!function(t){"use strict";t.loadCSS||(t.loadCSS=function(){});var e=loadCSS.relpreload={};if(e.support=function(){var e;try{e=t.document.createElement("link").relList.supports("preload")}catch(t){e=!1}return function(){return e}}(),e.bindMediaToggle=function(t){function e(){t.media=a}var a=t.media||"all";t.addEventListener?t.addEventListener("load",e):t.attachEvent&&t.attachEvent("onload",e),setTimeout(function(){t.rel="stylesheet",t.media="only x"}),setTimeout(e,3e3)},e.poly=function(){if(!e.support())for(var a=t.document.getElementsByTagName("link"),n=0;n<a.length;n++){var o=a[n];"preload"!==o.rel||"style"!==o.getAttribute("as")||o.getAttribute("data-loadcss")||(o.setAttribute("data-loadcss",!0),e.bindMediaToggle(o))}},!e.support()){e.poly();var a=t.setInterval(e.poly,500);t.addEventListener?t.addEventListener("load",function(){e.poly(),t.clearInterval(a)}):t.attachEvent&&t.attachEvent("onload",function(){e.poly(),t.clearInterval(a)})}"undefined"!=typeof exports?exports.loadCSS=loadCSS:t.loadCSS=loadCSS}("undefined"!=typeof global?global:this);
+		</script>';
+}
+}
+
+if (!is_admin()) { add_action('wp_head', 'fvm_add_loadcss', PHP_INT_MAX); }
 
 
 

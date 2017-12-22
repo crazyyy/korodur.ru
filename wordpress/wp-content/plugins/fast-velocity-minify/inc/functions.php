@@ -3,7 +3,7 @@
 # handle better utf-8 and unicode encoding
 if(function_exists('mb_internal_encoding')) { mb_internal_encoding('UTF-8'); }
 
-# Consider fallback to PHP Minify [2017.07.01] from https://github.com/matthiasmullie/minify (must be defined on the outer scope)
+# Consider fallback to PHP Minify [2017.12.17] from https://github.com/matthiasmullie/minify (must be defined on the outer scope)
 $path = $plugindir . 'libs/matthiasmullie';
 require_once $path . '/minify/src/Minify.php';
 require_once $path . '/minify/src/CSS.php';
@@ -22,24 +22,28 @@ require_once ($plugindir . 'libs/mrclay/HTML.php');
 # get cache directories and urls
 function fvm_cachepath() {
 
-# create
-$upload = wp_upload_dir();
-$cachebase = rtrim($upload['basedir'], '/').'/fvm';
-$cachedir =  rtrim($upload['basedir'], '/').'/fvm/cache';
-$tmpdir = rtrim($upload['basedir'], '/').'/fvm/temp';
-$cachedirurl = rtrim($upload['baseurl'], '/').'/fvm/cache';
-if(!is_dir($cachebase)) { mkdir($cachebase); }
-if(!is_dir($cachedir)) { mkdir($cachedir); }
-if(!is_dir($tmpdir)) { mkdir($tmpdir); }
-$return = array('cachebase'=>$cachebase,'tmpdir'=>$tmpdir, 'cachedir'=>$cachedir, 'cachedirurl'=>$cachedirurl);
-	
-# save or update
-$save = get_option('fvm-cachepath', array()); 
-if($save != $return) {
-	update_option('fvm-cachepath', $return);
+# custom directory
+$fvm_change_cache_path = get_option('fastvelocity_min_change_cache_path');
+$fvm_change_cache_base = get_option('fastvelocity_min_change_cache_base_url');
+$upload = array();
+if($fvm_change_cache_path !== false && $fvm_change_cache_base !== false && strlen($fvm_change_cache_path) > 1) {
+	$upload['basedir'] = trim($fvm_change_cache_path);
+	$upload['baseurl'] = trim($fvm_change_cache_base);
+} else {
+	$upload = wp_upload_dir(); # default 
 }
 
-return $return;
+# create
+$cachebase = rtrim($upload['basedir'], '/').'/fvm';
+$cachedir =  rtrim($upload['basedir'], '/').'/fvm/out';
+$tmpdir = rtrim($upload['basedir'], '/').'/fvm/tmp';
+$cachedirurl = rtrim($upload['baseurl'], '/').'/fvm/out';
+if(!is_dir($cachebase)) { mkdir($cachebase, 0755, true); }
+if(!is_dir($cachedir)) { mkdir($cachedir, 0755, true); }
+if(!is_dir($tmpdir)) { mkdir($tmpdir, 0755, true); }
+
+# return
+return array('cachebase'=>$cachebase,'tmpdir'=>$tmpdir, 'cachedir'=>$cachedir, 'cachedirurl'=>$cachedirurl);
 }
 
 
@@ -606,7 +610,10 @@ function fvm_get_protocol($url) {
 
 	# cdn support
 	$fvm_cdn_url = get_option('fastvelocity_min_fvm_cdn_url');
-	if(!empty($fvm_cdn_url)) {
+	$defer_for_pagespeed = get_option('fastvelocity_min_defer_for_pagespeed'); 
+	
+	# excluded from cdn because of https://www.chromestatus.com/feature/5718547946799104 (we use document.write to preserve render blocking)
+	if(!empty($fvm_cdn_url) && $defer_for_pagespeed != true) {
 		$fvm_cdn_url = trim(trim(str_ireplace(array('http://', 'https://'), '', trim($fvm_cdn_url, '/'))), '/');
 		$url = str_ireplace($wp_domain, $fvm_cdn_url, $url);
 	}
@@ -637,6 +644,8 @@ foreach( $transient_keys as $t ) { delete_transient( $t ); } # delete
 
 # purge all caches
 function fvm_purge_all() {
+
+
 
 # get cache directories and urls
 $cachepath = fvm_cachepath();
