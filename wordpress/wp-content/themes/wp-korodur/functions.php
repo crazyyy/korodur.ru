@@ -165,7 +165,122 @@ function wpeFootNav() {
 function wpeSideNav() {
   wp_nav_menu(
   array(
-    'theme_location'  => 'sidebar-menu',
+    'theme_location'  => 'sidebar-menu-1',
+    'menu'            => '',
+    'container'       => 'div',
+    'container_class' => 'menu-{menu slug}-container',
+    'container_id'    => '',
+    'menu_class'      => 'menu',
+    'menu_id'         => '',
+    'echo'            => true,
+    'fallback_cb'     => 'wp_page_menu',
+    'before'          => '',
+    'after'           => '',
+    'link_before'     => '',
+    'link_after'      => '',
+    'items_wrap'      => '<ul class="sidebarnav">%3$s</ul>',
+    'depth'           => 0,
+    'walker'          => ''
+    )
+  );
+}
+// WPE sidebar navigation
+function wpeSideNav2() {
+  wp_nav_menu(
+  array(
+    'theme_location'  => 'sidebar-menu-2',
+    'menu'            => '',
+    'container'       => 'div',
+    'container_class' => 'menu-{menu slug}-container',
+    'container_id'    => '',
+    'menu_class'      => 'menu',
+    'menu_id'         => '',
+    'echo'            => true,
+    'fallback_cb'     => 'wp_page_menu',
+    'before'          => '',
+    'after'           => '',
+    'link_before'     => '',
+    'link_after'      => '',
+    'items_wrap'      => '<ul class="sidebarnav">%3$s</ul>',
+    'depth'           => 0,
+    'walker'          => ''
+    )
+  );
+}
+// WPE sidebar navigation
+function wpeSideNav3() {
+  wp_nav_menu(
+  array(
+    'theme_location'  => 'sidebar-menu-3',
+    'menu'            => '',
+    'container'       => 'div',
+    'container_class' => 'menu-{menu slug}-container',
+    'container_id'    => '',
+    'menu_class'      => 'menu',
+    'menu_id'         => '',
+    'echo'            => true,
+    'fallback_cb'     => 'wp_page_menu',
+    'before'          => '',
+    'after'           => '',
+    'link_before'     => '',
+    'link_after'      => '',
+    'items_wrap'      => '<ul class="sidebarnav">%3$s</ul>',
+    'depth'           => 0,
+    'walker'          => ''
+    )
+  );
+}
+// WPE sidebar navigation
+function wpeSideNav4() {
+  wp_nav_menu(
+  array(
+    'theme_location'  => 'sidebar-menu-4',
+    'menu'            => '',
+    'container'       => 'div',
+    'container_class' => 'menu-{menu slug}-container',
+    'container_id'    => '',
+    'menu_class'      => 'menu',
+    'menu_id'         => '',
+    'echo'            => true,
+    'fallback_cb'     => 'wp_page_menu',
+    'before'          => '',
+    'after'           => '',
+    'link_before'     => '',
+    'link_after'      => '',
+    'items_wrap'      => '<ul class="sidebarnav">%3$s</ul>',
+    'depth'           => 0,
+    'walker'          => ''
+    )
+  );
+}
+// WPE sidebar navigation
+function wpeSideNav5() {
+  wp_nav_menu(
+  array(
+    'theme_location'  => 'sidebar-menu-5',
+    'menu'            => '',
+    'container'       => 'div',
+    'container_class' => 'menu-{menu slug}-container',
+    'container_id'    => '',
+    'menu_class'      => 'menu',
+    'menu_id'         => '',
+    'echo'            => true,
+    'fallback_cb'     => 'wp_page_menu',
+    'before'          => '',
+    'after'           => '',
+    'link_before'     => '',
+    'link_after'      => '',
+    'items_wrap'      => '<ul class="sidebarnav">%3$s</ul>',
+    'depth'           => 0,
+    'walker'          => ''
+    )
+  );
+}
+// WPE sidebar navigation
+function wpeSideNav6() {
+  wp_nav_menu(
+  array(
+    'theme_location'  => 'sidebar-menu-6',
     'menu'            => '',
     'container'       => 'div',
     'container_class' => 'menu-{menu slug}-container',
@@ -190,6 +305,12 @@ function register_html5_menu() {
   register_nav_menus(array(
     'header-menu' => __('Меню в шапке', 'wpeasy'),
     'sidebar-menu' => __('Меню в сайдбар', 'wpeasy'),
+    'sidebar-menu-1' => __('Меню #1 в сайдбар', 'wpeasy'),
+    'sidebar-menu-2' => __('Меню #2 в сайдбар', 'wpeasy'),
+    'sidebar-menu-3' => __('Меню #3 в сайдбар', 'wpeasy'),
+    'sidebar-menu-4' => __('Меню #4 в сайдбар', 'wpeasy'),
+    'sidebar-menu-5' => __('Меню #5 в сайдбар', 'wpeasy'),
+    'sidebar-menu-6' => __('Меню #6 в сайдбар', 'wpeasy'),
     'footer-menu' => __('Меню в подвал', 'wpeasy')
   ));
 }

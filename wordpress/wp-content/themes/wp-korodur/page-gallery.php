@@ -10,10 +10,8 @@
   <div class="container wpPageMainContainer">
     <div class="row">
 
-      <?php get_sidebar(); ?>
-
       <?php if (have_posts()): while (have_posts()) : the_post(); ?>
-        <div id="post-<?php the_ID(); ?>" <?php post_class('col-md-8 col-lg-9 wpPageMainContentContainer wpPageMainContentContainerTop wpAreaColorIndustry'); ?>>
+        <div id="post-<?php the_ID(); ?>" <?php post_class('col-md-12 col-lg-12 wpPageMainContentContainer wpPageMainContentContainerTop wpAreaColorIndustry'); ?>>
 
           <div class="wpContentElement">
             <h2><?php the_title(); ?></h2>

@@ -1,4 +1,4 @@
-<?php /* Template Name: Widget #1 Page */ get_header(); ?>
+<?php /* Template Name: Widget #3 Page */ get_header(); ?>
 
   <div class="wpHeaderTitlebar wpAreaColorIndustry">
     <h2><?php the_title(); ?></h2>
