@@ -38,7 +38,7 @@ function wpeStyles()  {
   wp_dequeue_style('fancybox');
   wp_dequeue_style('wp_dequeue_style');
 
-  wp_register_style('wpeasy-style', get_template_directory_uri() . '/css/main.css', array(), '1.0', 'all');
+  wp_register_style('wpeasy-style', get_template_directory_uri() . '/css/main.css', array(), '1.1', 'all');
   wp_enqueue_style('wpeasy-style'); // Enqueue it!
 }
 
@@ -58,6 +58,8 @@ function wpeHeaderScripts() {
     wp_deregister_script( 'jquery-form' );
 
     //  Load footer scripts (footer.php)
+    wp_register_script('jquery-mmenu', '//cdnjs.cloudflare.com/ajax/libs/jQuery.mmenu/7.0.1/jquery.mmenu.js', array(), '7.0.1', true);
+    wp_enqueue_script('jquery-mmenu');
     wp_register_script('tether', get_template_directory_uri() . '/js/tether.min.js', array(), '1.0.0', true);
     wp_enqueue_script('tether');
     wp_register_script('bootstrap', get_template_directory_uri() . '/js/bootstrap.min.js', array(), '1.0.0', true);
@@ -73,7 +75,7 @@ function wpeHeaderScripts() {
     wp_register_script('init', get_template_directory_uri() . '/js/init.js', array(), '1.0.0', true);
     wp_enqueue_script('init');
 
-    wp_register_script('wpeScripts', get_template_directory_uri() . '/js/scripts.js', array(), '1.0.0', true);
+    wp_register_script('wpeScripts', get_template_directory_uri() . '/js/scripts.js', array(), '1.2.0', true);
     wp_enqueue_script('wpeScripts');
 
   }
@@ -133,6 +135,28 @@ function wpeHeadNav() {
     'link_before'     => '',
     'link_after'      => '',
     'items_wrap'      => '<ul class="nav navbar-nav">%3$s</ul>',
+    'depth'           => 0,
+    'walker'          => ''
+    )
+  );
+}
+function wpeMobileHeadNav() {
+  wp_nav_menu(
+  array(
+    'theme_location'  => 'header-menumobile',
+    'menu'            => '',
+    'container'       => 'div',
+    'container_class' => 'menu-{menu slug}-container',
+    'container_id'    => '',
+    'menu_class'      => 'menu',
+    'menu_id'         => '',
+    'echo'            => true,
+    'fallback_cb'     => 'wp_page_menu',
+    'before'          => '',
+    'after'           => '',
+    'link_before'     => '',
+    'link_after'      => '',
+    'items_wrap'      => '<ul class="header-mmenu-nav">%3$s</ul>',
     'depth'           => 0,
     'walker'          => ''
     )
@@ -304,6 +328,7 @@ add_action('init', 'register_html5_menu'); // Add HTML5 Blank Menu
 function register_html5_menu() {
   register_nav_menus(array(
     'header-menu' => __('Меню в шапке', 'wpeasy'),
+    'header-menumobile' => __('Мобильное меню', 'wpeasy'),
     'sidebar-menu' => __('Меню в сайдбар', 'wpeasy'),
     'sidebar-menu-1' => __('Меню #1 в сайдбар', 'wpeasy'),
     'sidebar-menu-2' => __('Меню #2 в сайдбар', 'wpeasy'),

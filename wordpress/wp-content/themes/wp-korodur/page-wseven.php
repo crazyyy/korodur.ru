@@ -1,4 +1,4 @@
-<?php /* Template Name: Widget #7 Page */ get_header(); ?>
+<?php /* Template Name: Widget #7 Recomend Page */ get_header(); ?>
 
   <div class="wpHeaderTitlebar wpAreaColorIndustry">
     <h2><?php the_title(); ?></h2>

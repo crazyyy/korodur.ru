@@ -1,4 +1,4 @@
-<?php /* Template Name: Widget #6 Page */ get_header(); ?>
+<?php /* Template Name: Widget #6 SpecSostav Page */ get_header(); ?>
 
   <div class="wpHeaderTitlebar wpAreaColorIndustry">
     <h2><?php the_title(); ?></h2>

@@ -88,3 +88,18 @@ if (typeof jQuery === "undefined") {
   });
 
 })();
+
+jQuery(document).ready(function($) {
+
+  $("#menu").mmenu({
+    "extensions": [
+      "fx-menu-zoom",
+      "pagedim-black",
+      "position-right"
+    ]
+  });
+  var API = $("#menu").data("mmenu");
+  $(".navbar-toggler").click(function() {
+    API.open();
+  });
+});

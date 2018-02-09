@@ -36,6 +36,9 @@
           <button class="navbar-toggler btn-white-outline pull-right offcanvas-toggle js-offcanvas-has-events" type="button" data-toggle="offcanvas" data-target="#wpPageNavCollapse">
             Menu <span>☰</span>
           </button>
+          <nav id="menu">
+            <?php wpeMobileHeadNav(); ?>
+          </nav>
           <div class="clearfix"></div>
         </div>
         <nav class="collapse navbar-toggleable-sm wpPageNavCollapse navbar-offcanvas navbar-offcanvas-right navbar-offcanvas-touch offcanvas-transform js-offcanvas-done" id="wpPageNavCollapse">
