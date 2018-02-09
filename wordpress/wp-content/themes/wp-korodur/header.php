@@ -34,7 +34,7 @@
         </h1>
         <div class="hidden-md-up" id="">
           <button class="navbar-toggler btn-white-outline pull-right offcanvas-toggle js-offcanvas-has-events" type="button" data-toggle="offcanvas" data-target="#wpPageNavCollapse">
-            Menu <span>☰</span>
+            Меню <span>☰</span>
           </button>
           <nav id="menu">
             <?php wpeMobileHeadNav(); ?>
